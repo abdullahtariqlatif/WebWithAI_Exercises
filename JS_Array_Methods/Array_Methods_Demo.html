@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Array Methods Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+      @layer components {
+        .demo-card {
+          @apply p-5 rounded-xl flex flex-col gap-2 bg-white border border-slate-200 transition-transform duration-200;
+        }
+        .method-title {
+          @apply font-bold text-blue-600;
+        }
+        .method-desc {
+          @apply text-xs text-gray-500 italic;
+        }
+        .method-input {
+          @apply w-full p-2 border rounded text-sm outline-blue-500;
+        }
+        .result-box {
+          @apply p-2 bg-gray-100 rounded text-sm font-mono min-h-[30px] overflow-x-auto whitespace-nowrap;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-50 min-h-screen p-4 md:p-8">
+    <header class="max-w-7xl mx-auto mb-8 text-center">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">JS Array Methods Demo</h1>
+      <p class="text-gray-600 mb-6">Enter values separated by commas (e.g. 10, 20, apple, 5)</p>
+      <button onclick="runAll()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition">
+        Run All Methods
+      </button>
+    </header>
+
+    <main class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="demo-card">
+        <h3 class="method-title">.map() (Multiply)</h3>
+        <p class="method-desc">Multiplies every number by 10.</p>
+        <input type="text" id="input-map" placeholder="1, 2, 3" class="method-input">
+        <div id="res-map" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.filter() (Numbers only)</h3>
+        <p class="method-desc">Removes anything that isn't a number.</p>
+        <input type="text" id="input-filter" placeholder="1, a, 2, b" class="method-input">
+        <div id="res-filter" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.sort() (Alphabetical)</h3>
+        <p class="method-desc">Default sort (treats items as strings).</p>
+        <input type="text" id="input-sort-alpha" placeholder="banana, apple, cherry" class="method-input">
+        <div id="res-sort-alpha" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.sort() (Numeric)</h3>
+        <p class="method-desc">Uses (a, b) => a - b to sort numbers properly.</p>
+        <input type="text" id="input-sort-num" placeholder="100, 25, 1" class="method-input">
+        <div id="res-sort-num" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.forEach()</h3>
+        <p class="method-desc">Logs index + value into a string.</p>
+        <input type="text" id="input-foreach" placeholder="a, b, c" class="method-input">
+        <div id="res-foreach" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.concat()</h3>
+        <p class="method-desc">Joins input with ["End"].</p>
+        <input type="text" id="input-concat" placeholder="1, 2" class="method-input">
+        <div id="res-concat" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.every()</h3>
+        <p class="method-desc">Check if ALL items have length > 3.</p>
+        <input type="text" id="input-every" placeholder="apple, pear" class="method-input">
+        <div id="res-every" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.some()</h3>
+        <p class="method-desc">Check if ANY item is "admin".</p>
+        <input type="text" id="input-some" placeholder="user, admin" class="method-input">
+        <div id="res-some" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.includes()</h3>
+        <p class="method-desc">Does the array contain "7"?</p>
+        <input type="text" id="input-includes" placeholder="1, 7, 9" class="method-input">
+        <div id="res-includes" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.join()</h3>
+        <p class="method-desc">Turns array into string with " 🔥 ".</p>
+        <input type="text" id="input-join" placeholder="A, B, C" class="method-input">
+        <div id="res-join" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.reduce()</h3>
+        <p class="method-desc">Sums numeric values.</p>
+        <input type="text" id="input-reduce" placeholder="1, 2, 3, 4" class="method-input">
+        <div id="res-reduce" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.find()</h3>
+        <p class="method-desc">Finds first item starting with 'z'.</p>
+        <input type="text" id="input-find" placeholder="apple, zebra, zoo" class="method-input">
+        <div id="res-find" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.findIndex()</h3>
+        <p class="method-desc">Index of first item > 50.</p>
+        <input type="text" id="input-findindex" placeholder="10, 60, 20" class="method-input">
+        <div id="res-findindex" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.indexOf()</h3>
+        <p class="method-desc">Position of "target".</p>
+        <input type="text" id="input-indexof" placeholder="a, target, c" class="method-input">
+        <div id="res-indexof" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.fill()</h3>
+        <p class="method-desc">Fills array with "X".</p>
+        <input type="text" id="input-fill" placeholder="1, 2, 3, 4" class="method-input">
+        <div id="res-fill" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.slice()</h3>
+        <p class="method-desc">Get items from index 1 to 3.</p>
+        <input type="text" id="input-slice" placeholder="0, 1, 2, 3, 4" class="method-input">
+        <div id="res-slice" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.reverse()</h3>
+        <p class="method-desc">Flips the array.</p>
+        <input type="text" id="input-reverse" placeholder="1, 2, 3" class="method-input">
+        <div id="res-reverse" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.push()</h3>
+        <p class="method-desc">Adds "New" to the end.</p>
+        <input type="text" id="input-push" placeholder="a, b" class="method-input">
+        <div id="res-push" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.pop()</h3>
+        <p class="method-desc">Removes the last item.</p>
+        <input type="text" id="input-pop" placeholder="1, 2, 3" class="method-input">
+        <div id="res-pop" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.shift()</h3>
+        <p class="method-desc">Removes the first item.</p>
+        <input type="text" id="input-shift" placeholder="1, 2, 3" class="method-input">
+        <div id="res-shift" class="result-box">--</div>
+      </div>
+
+      <div class="demo-card">
+        <h3 class="method-title">.unshift()</h3>
+        <p class="method-desc">Adds "First" to the start.</p>
+        <input type="text" id="input-unshift" placeholder="2, 3" class="method-input">
+        <div id="res-unshift" class="result-box">--</div>
+      </div>
+
+    </main>
+
+    <script>
+      // --- HELPERS ---
+      function getArray(id) {
+        const val = document.getElementById(id).value;
+        if (!val.trim()) return [];
+        return val.split(',').map(s => s.trim());
+      }
+
+      function setResult(id, data) {
+        document.getElementById(id).innerText = JSON.stringify(data);
+      }
+
+      // --- INDIVIDUAL DEMO FUNCTIONS ---
+
+      function demoMap() {
+        const arr = getArray('input-map');
+        setResult('res-map', arr.map(x => isNaN(x) || x === "" ? x : Number(x) * 10));
+      }
+
+      function demoFilter() {
+        const arr = getArray('input-filter');
+        setResult('res-filter', arr.filter(x => !isNaN(x) && x !== ""));
+      }
+
+      function demoSortAlpha() {
+        const arr = getArray('input-sort-alpha');
+        setResult('res-sort-alpha', [...arr].sort());
+      }
+
+      function demoSortNum() {
+        const arr = getArray('input-sort-num');
+        setResult('res-sort-num', [...arr].sort((a, b) => Number(a) - Number(b)));
+      }
+
+      function demoForEach() {
+        const arr = getArray('input-foreach');
+        let feResult = [];
+        arr.forEach((val, i) => feResult.push(`${i}:${val}`));
+        setResult('res-foreach', feResult);
+      }
+
+      function demoConcat() {
+        const arr = getArray('input-concat');
+        setResult('res-concat', arr.concat(["End"]));
+      }
+
+      function demoEvery() {
+        const arr = getArray('input-every');
+        setResult('res-every', arr.length > 0 ? arr.every(x => x.length > 3) : "Empty Array");
+      }
+
+      function demoSome() {
+        const arr = getArray('input-some');
+        setResult('res-some', arr.some(x => x === 'admin'));
+      }
+
+      function demoIncludes() {
+        const arr = getArray('input-includes');
+        setResult('res-includes', arr.includes('7'));
+      }
+
+      function demoJoin() {
+        const arr = getArray('input-join');
+        setResult('res-join', arr.join(" ArrayJoinText "));
+      }
+
+      function demoReduce() {
+        const arr = getArray('input-reduce');
+        setResult('res-reduce', arr.reduce((acc, cur) => acc + (Number(cur) || 0), 0));
+      }
+
+      function demoFind() {
+        const arr = getArray('input-find');
+        setResult('res-find', arr.find(x => x.startsWith('z')) || "Not Found");
+      }
+
+      function demoFindIndex() {
+        const arr = getArray('input-findindex');
+        setResult('res-findindex', arr.findIndex(x => Number(x) > 50));
+      }
+
+      function demoIndexOf() {
+        const arr = getArray('input-indexof');
+        setResult('res-indexof', arr.indexOf('target'));
+      }
+
+      function demoFill() {
+        const arr = getArray('input-fill');
+        setResult('res-fill', [...arr].fill("X"));
+      }
+
+      function demoSlice() {
+        const arr = getArray('input-slice');
+        setResult('res-slice', arr.slice(1, 3));
+      }
+
+      function demoReverse() {
+        const arr = getArray('input-reverse');
+        setResult('res-reverse', [...arr].reverse());
+      }
+
+      function demoPush() {
+        const arr = getArray('input-push');
+        let temp = [...arr];
+        temp.push("New");
+        setResult('res-push', temp);
+      }
+
+      function demoPop() {
+        const arr = getArray('input-pop');
+        let temp = [...arr];
+        temp.pop();
+        setResult('res-pop', temp);
+      }
+
+      function demoShift() {
+        const arr = getArray('input-shift');
+        let temp = [...arr];
+        temp.shift();
+        setResult('res-shift', temp);
+      }
+
+      function demoUnshift() {
+        const arr = getArray('input-unshift');
+        let temp = [...arr];
+        temp.unshift("First");
+        setResult('res-unshift', temp);
+      }
+
+      // --- MAIN RUNNER ---
+      function runAll() {
+        demoMap();
+        demoFilter();
+        demoSortAlpha();
+        demoSortNum();
+        demoForEach();
+        demoConcat();
+        demoEvery();
+        demoSome();
+        demoIncludes();
+        demoJoin();
+        demoReduce();
+        demoFind();
+        demoFindIndex();
+        demoIndexOf();
+        demoFill();
+        demoSlice();
+        demoReverse();
+        demoPush();
+        demoPop();
+        demoShift();
+        demoUnshift();
+      }
+    </script>
+  </body>
+</html>
