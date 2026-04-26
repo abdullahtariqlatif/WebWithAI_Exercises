@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Loops Demo</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f1f5f9;
+      --code-bg: #000000;
+      --accent: #22d3ee;
+      --desc-text: #94a3b8;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container { max-width: 1000px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 3rem; }
+
+    .loop-section {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      border: 1px solid #334155;
+    }
+
+    h2 { color: var(--accent); margin-top: 0; margin-bottom: 0.5rem; }
+
+    .description {
+      color: var(--desc-text);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .example-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .example-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .label { font-weight: bold; color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    pre {
+      background: var(--code-bg);
+      color: #e2e8f0;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      border: 1px solid #1e293b;
+      margin: 0;
+    }
+
+    .output-box {
+      background: #064e3b;
+      color: #34d399;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      min-height: 40px;
+      white-space: pre-wrap;
+      border: 1px solid #065f46;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    button:hover { background: #4338ca; }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>JS Loop Demonstrator</h1>
+      <p>Interactive guide to JavaScript iteration structures</p>
+    </header>
+
+    <section class="loop-section">
+      <h2>1. For Loop</h2>
+      <p class="description">
+        The standard <strong>for loop</strong> is used when you know exactly how many times you want to run a block of code. It consists of three parts: initialization, condition, and increment/decrement.
+      </p>
+      <div class="example-grid">
+        <div class="example-card">
+          <span class="label">Logic:</span>
+<pre>for (let i = 1; i <= 3; i++) {
+  res += `Count: ${i}`;
+}</pre>
+          <button onclick="runFor()">Run Loop</button>
+          <span class="label">Live Output:</span>
+          <div id="out-for" class="output-box"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="loop-section">
+      <h2>2. While Loop</h2>
+      <p class="description">
+        The <strong>while loop</strong> loops through a block of code as long as a specified condition is true. Be careful—if the condition never becomes false, you'll create an infinite loop!
+      </p>
+      <div class="example-grid">
+        <div class="example-card">
+          <span class="label">Logic:</span>
+<pre>let i = 0;
+while (i < 3) {
+  res += `While: ${i}`;
+  i++;
+}</pre>
+          <button onclick="runWhile()">Run Loop</button>
+          <span class="label">Live Output:</span>
+          <div id="out-while" class="output-box"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="loop-section">
+      <h2>3. Do...While Loop</h2>
+      <p class="description">
+        The <strong>do...while loop</strong> is a variant of the while loop. This loop will execute the code block <strong>once</strong> before checking if the condition is true.
+      </p>
+      <div class="example-grid">
+        <div class="example-card">
+          <span class="label">Logic:</span>
+<pre>let i = 5;
+do {
+  res += `Ran once!`;
+  i++;
+} while (i < 3);</pre>
+          <button onclick="runDoWhile()">Run Loop</button>
+          <span class="label">Live Output:</span>
+          <div id="out-do" class="output-box"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="loop-section">
+      <h2>4. For...of Loop</h2>
+      <p class="description">
+        The <strong>for...of</strong> statement creates a loop iterating over "iterable" objects like Arrays. It's much cleaner than a standard for loop for accessing items in a list.
+      </p>
+      <div class="example-grid">
+        <div class="example-card">
+          <span class="label">Logic:</span>
+<pre>const items = ['Apple', 'Orange'];
+for (const x of items) {
+  res += `Fruit: ${x}`;
+}</pre>
+          <button onclick="runForOf()">Run Loop</button>
+          <span class="label">Live Output:</span>
+          <div id="out-of" class="output-box"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const log = (id, val) => document.getElementById(id).innerText = val;
+
+    function runFor() {
+      let res = "";
+      for (let i = 1; i <= 3; i++) { res += `Count: ${i}\n`; }
+      log('out-for', res);
+    }
+
+    function runWhile() {
+      let res = "", i = 0;
+      while (i < 3) { res += `While index: ${i}\n`; i++; }
+      log('out-while', res);
+    }
+
+    function runDoWhile() {
+      let res = "", i = 5;
+      do {
+        res += `Value: ${i} (The "do" block ran!)\n`;
+        i++;
+      } while (i < 3);
+      log('out-do', res);
+    }
+
+    function runForOf() {
+      let res = "";
+      const fruits = ['Apple', 'Orange', 'Grapes'];
+      for (const item of fruits) { res += `Fruit: ${item}\n`; }
+      log('out-of', res);
+    }
+  </script>
+</body>
+</html>
